@@ -53,13 +53,13 @@ jobs:
           pixi run setup builddir-dbl -Ddouble=true
           pixi run build builddir-dbl
 
-      - name: Upload release
+      - name: Create distribution
         if: success()
         shell: bash
         run: |
           # determine OS and version tags
           ostag=$(pixi run -e default get-ostag)
-          ver=$(grep "version:" meson.build | sed "s/  version: '\(.*\)',/\1/g")
+          ver=$(grep "^  version:" meson.build | head -1 | sed "s/  version: '\(.*\)',/\1/g")
 
           # create distribution directory
           mkdir -p ${{ env.DIST }}
@@ -103,7 +103,7 @@ jobs:
       - name: Get version
         id: get-version
         run: |
-          ver=$(grep "version:" meson.build | sed "s/  version: '\(.*\)',/\1/g")
+          ver=$(grep "^  version:" meson.build | head -1 | sed "s/  version: '\(.*\)',/\1/g")
           echo "version=$ver" >> $GITHUB_OUTPUT
 
       - name: Download all artifacts

@@ -134,7 +134,9 @@ add_project_link_arguments(fc.get_supported_arguments(link_args), language: 'for
 
 compile_args = []
 link_args = []
-if cc_id == 'intel'
+if cc_id == 'gcc'
+  compile_args += ['-Wno-unused-but-set-variable']
+elif cc_id == 'intel'
   compile_args += ['-frtti', '-diag-disable=10441']
   link_args += ['-diag-disable=10441']
 endif
