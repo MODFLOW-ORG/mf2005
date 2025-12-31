@@ -62,4 +62,5 @@ mf2005_sources = files(
 
 mf2005 = executable(buildname,
                     mf2005_sources,
+                    link_language: 'fortran',
                     install: true)
