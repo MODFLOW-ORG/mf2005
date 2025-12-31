@@ -23,16 +23,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # gcc
-          - {os: ubuntu-22.04, compiler: gcc, version: 11}
-          - {os: ubuntu-22.04, compiler: gcc, version: 12}
           - {os: ubuntu-22.04, compiler: gcc, version: 13}
-          # ifort
-          - {os: ubuntu-22.04, compiler: intel-classic, version: "2021.7"}
-          - {os: macos-13, compiler: intel-classic, version: "2021.10"}
-          # ifx
-          - {os: ubuntu-22.04, compiler: intel, version: "2024.2"}
-          - {os: windows-2022, compiler: intel, version: "2024.2"}
+          - {os: macos-14, compiler: gcc, version: 13}
+          - {os: ubuntu-22.04, compiler: intel, version: "2025.2"}
+          - {os: windows-2022, compiler: intel, version: "2025.2"}
     steps:
       - name: Checkout mf2005
         uses: actions/checkout@v4
