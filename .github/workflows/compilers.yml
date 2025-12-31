@@ -1,0 +1,129 @@
+name: compilers
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  schedule:
+    - cron: '0 6 * * *' # run at 6 AM UTC every day
+  workflow_dispatch:
+
+env:
+  PIXI_BETA_WARNING_OFF: true
+  DIST: dist-${{ github.run_number }}
+  PROGRAM_NAME: mf2005
+
+jobs:
+  build:
+    name: ${{ matrix.compiler }} ${{ matrix.version }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # gcc
+          - {os: ubuntu-22.04, compiler: gcc, version: 11}
+          - {os: ubuntu-22.04, compiler: gcc, version: 12}
+          - {os: ubuntu-22.04, compiler: gcc, version: 13}
+          # ifort
+          - {os: ubuntu-22.04, compiler: intel-classic, version: "2021.7"}
+          - {os: macos-13, compiler: intel-classic, version: "2021.10"}
+          # ifx
+          - {os: ubuntu-22.04, compiler: intel, version: "2024.2"}
+          - {os: windows-2022, compiler: intel, version: "2024.2"}
+    steps:
+      - name: Checkout mf2005
+        uses: actions/checkout@v4
+
+      - name: Setup ${{ matrix.compiler }} ${{ matrix.version }}
+        uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
+      - name: Setup Pixi
+        uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.41.4
+          manifest-path: pixi.toml
+
+      - name: Build single precision
+        run: |
+          pixi run setup builddir
+          pixi run build builddir
+
+      - name: Build double precision
+        run: |
+          pixi run setup builddir-dbl -Ddouble=true
+          pixi run build builddir-dbl
+
+      - name: Upload release
+        if: success()
+        shell: bash
+        run: |
+          # determine OS and version tags
+          ostag=$(pixi run -e default get-ostag)
+          ver=$(grep "version:" meson.build | sed "s/  version: '\(.*\)',/\1/g")
+
+          # create distribution directory
+          mkdir -p ${{ env.DIST }}
+
+          # move binaries to distribution directory
+          mv builddir/bin/${{ env.PROGRAM_NAME }} ${{ env.DIST }}/${{ env.PROGRAM_NAME }}_${ver}_${ostag}.exe || true
+          mv builddir/bin/${{ env.PROGRAM_NAME }}.exe ${{ env.DIST }}/${{ env.PROGRAM_NAME }}_${ver}_${ostag}.exe || true
+          mv builddir-dbl/bin/${{ env.PROGRAM_NAME }}dbl ${{ env.DIST }}/${{ env.PROGRAM_NAME }}dbl_${ver}_${ostag}.exe || true
+          mv builddir-dbl/bin/${{ env.PROGRAM_NAME }}dbl.exe ${{ env.DIST }}/${{ env.PROGRAM_NAME }}dbl_${ver}_${ostag}.exe || true
+
+          # create distribution zip
+          (cd ${{ env.DIST }} && zip -r ../${{ env.DIST }}_${{ matrix.compiler }}_${{ matrix.version }}_${ostag}.zip .)
+
+      - name: Upload distribution artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DIST }}_${{ matrix.compiler }}_${{ matrix.version }}_${{ matrix.os }}
+          path: ${{ env.DIST }}_*.zip
+
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildlogs_${{ matrix.compiler }}_${{ matrix.version }}_${{ matrix.os }}
+          path: |
+            builddir/meson-logs/meson-log.txt
+            builddir-dbl/meson-logs/meson-log.txt
+
+  release:
+    name: Draft release
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout mf2005
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: get-version
+        run: |
+          ver=$(grep "version:" meson.build | sed "s/  version: '\(.*\)',/\1/g")
+          echo "version=$ver" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.DIST }}
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.get-version.outputs.version }}
+          name: mf2005 ${{ steps.get-version.outputs.version }}
+          body: MODFLOW-2005 version ${{ steps.get-version.outputs.version }}
+          draft: true
+          artifacts: ${{ env.DIST }}/**/*.zip
+          allowUpdates: true
+          updateOnlyUnreleased: true
