@@ -27,9 +27,14 @@ jobs:
           - {os: macos-14, compiler: gcc, version: 13, shell: bash, release: yes}
           - {os: ubuntu-22.04, compiler: intel, version: "2025.2", shell: bash, release: yes}
           - {os: windows-2022, compiler: intel, version: "2025.2", shell: pwsh, release: yes}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
     steps:
       - name: Checkout mf2005
         uses: actions/checkout@v4
+        with:
+          path: ${{ env.PROGRAM_NAME }}
 
       - name: Setup ${{ matrix.compiler }} ${{ matrix.version }}
         uses: fortran-lang/setup-fortran@v1
@@ -44,7 +49,6 @@ jobs:
           manifest-path: pixi.toml
 
       - name: Set ostag
-        shell: bash
         working-directory: ${{ env.PROGRAM_NAME }}
         id: ostag
         run: |
