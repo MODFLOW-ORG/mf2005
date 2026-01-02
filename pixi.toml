@@ -21,3 +21,4 @@ setup = { cmd = "meson setup --prefix=$(pwd) --bindir=bin", env = { PKG_CONFIG_P
 build = "meson install -C"
 # get ostag for system
 get-ostag = { cmd = "python -c 'from modflow_devtools.ostags import get_ostag; print(get_ostag())'"}
+autotest = { cmd = "nosetests -v --with-id --with-timer -w ./autotest" }
