@@ -78,6 +78,10 @@ jobs:
           name: meson-log.txt
           path: ${{ env.PROGRAM_NAME }}/builddir/meson-logs/meson-log.txt
 
+      - name: Test applications
+        working-directory: ${{ env.PROGRAM_NAME }}
+        run: nosetests -v --with-id --with-timer -w ./autotest
+
       - name: Create source zip file on Linux
         if: ${{ matrix.release == 'yes' && runner.os == 'Linux' }}
         working-directory: ${{ env.PROGRAM_NAME }}
