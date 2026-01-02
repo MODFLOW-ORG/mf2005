@@ -1,7 +1,8 @@
 import os
 import sys
 import platform
-import pymake
+from pathlib import Path
+from shutil import rmtree
 
 testdir = "temp"
 releasedir = os.path.join(testdir, "release")
@@ -43,18 +44,21 @@ exdir = "test-run"
 arcdir = "test-arc"
 testdev = "test-dev"
 testswr = "test-swr"
+# Convert to absolute paths relative to this file's location
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_parent_dir = os.path.dirname(_script_dir)
 testpaths = (
-    os.path.join("..", exdir),
-    os.path.join("..", arcdir),
-    os.path.join("..", testdev),
-    os.path.join("..", testswr),
+    os.path.join(_parent_dir, exdir),
+    os.path.join(_parent_dir, arcdir),
+    os.path.join(_parent_dir, testdev),
+    os.path.join(_parent_dir, testswr),
 )
 
 # Development version information
 program = "mf2005"
 srcdir = os.path.join("..", "src")
 target = program + exe_ext
-target_dict[program] = os.path.abspath(os.path.join(testdir, target))
+target_dict[program] = os.path.abspath(os.path.join(_parent_dir, "bin", target))
 
 # Release version information
 target_release = os.path.join(releasedir, program + exe_ext)
@@ -92,7 +96,9 @@ def teardown(success, test_model):
     if success:
         if not retain:
             print("\ttearing down...{}".format(test_model))
-            pymake.teardown(test_model)
+            test_path = Path(test_model)
+            if test_path.exists() and test_path.is_dir():
+                rmtree(test_path)
     assert success, "{} model did not run".format(test_model)
 
     return

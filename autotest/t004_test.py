@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
+from shutil import copytree, rmtree
+import pytest
 import flopy
-import pymake
-from pymake import get_namefiles
+from flopy.utils.compare import compare, compare_swrbudget, compare_stages
+from modflow_devtools.misc import get_namefile_paths
 import config
 
 
@@ -12,7 +15,9 @@ def run_mf2005(namefile, comparison=True):
     """
 
     # Set root as the directory name where namefile is located
-    testname = pymake.get_sim_name(namefile, rootpth=config.testpaths[3])[0]
+    # Get test name from namefile path (parent dir name + namefile stem)
+    namefile_path = Path(namefile)
+    testname = f"{namefile_path.parent.name}_{namefile_path.stem}"
 
     # if "VCatch" not in testname:
     #     return
@@ -26,9 +31,12 @@ def run_mf2005(namefile, comparison=True):
     # Set nam as namefile name without path
     nam = os.path.basename(namefile)
 
-    # Setup
-    testpth = os.path.join(config.testdir, testname)
-    pymake.setup(namefile, testpth)
+    # Setup - copy model files to test directory
+    testpth = Path(config.testdir) / testname
+    model_ws = Path(namefile).parent
+    if testpth.exists():
+        rmtree(testpth)
+    copytree(model_ws, testpth)
 
     # run test models
     print("running model...{}".format(testname))
@@ -36,35 +44,34 @@ def run_mf2005(namefile, comparison=True):
     success, buff = flopy.run_model(
         exe_name,
         nam,
-        model_ws=testpth,
+        model_ws=str(testpth),
         silent=False,
     )
 
     # If it is a comparison, then look for files in the comparison
     # folder (.cmp)
     if success and comparison:
-        testname_reg = os.path.basename(config.target_release)
-        testpth_reg = os.path.join(testpth, testname_reg)
-        pymake.setup(namefile, testpth_reg)
+        testname_reg = Path(config.target_release).name
+        testpth_reg = testpth / testname_reg
+        model_ws = Path(namefile).parent
+        if testpth_reg.exists():
+            rmtree(testpth_reg)
+        copytree(model_ws, testpth_reg)
         print("running regression model...{}".format(testname_reg))
         exe_name = config.target_dict["release"]
         success, buff = flopy.run_model(
             exe_name,
             nam,
-            model_ws=testpth_reg,
+            model_ws=str(testpth_reg),
             silent=False,
         )
 
         if success:
-            namefile1 = os.path.join(testpth, nam)
-            namefile2 = os.path.join(testpth_reg, nam)
-            outfile1 = os.path.join(
-                os.path.split(os.path.join(testpth, nam))[0], "bud.cmp"
-            )
-            outfile2 = os.path.join(
-                os.path.split(os.path.join(testpth, nam))[0], "hds.cmp"
-            )
-            success_cmp = pymake.compare(
+            namefile1 = str(testpth / nam)
+            namefile2 = str(testpth_reg / nam)
+            outfile1 = str(testpth / "bud.cmp")
+            outfile2 = str(testpth / "hds.cmp")
+            success_cmp = compare(
                 namefile1,
                 namefile2,
                 precision="single",
@@ -77,10 +84,8 @@ def run_mf2005(namefile, comparison=True):
             if not success_cmp:
                 print("{} comparison failed".format(testname))
 
-            outfile3 = os.path.join(
-                os.path.split(os.path.join(testpth, nam))[0], "swr.bud.cmp"
-            )
-            success_swr = pymake.compare_swrbudget(
+            outfile3 = str(testpth / "swr.bud.cmp")
+            success_swr = compare_swrbudget(
                 namefile1,
                 namefile2,
                 max_cumpd=pdtol,
@@ -91,11 +96,8 @@ def run_mf2005(namefile, comparison=True):
                 print("{} swr budget comparison failed".format(testname))
 
             # stage comparison
-            outfile4 = os.path.join(
-                os.path.split(os.path.join(testpth, nam))[0],
-                "swr.stage.cmp",
-            )
-            success_stg = pymake.compare_stages(
+            outfile4 = str(testpth / "swr.stage.cmp")
+            success_stg = compare_stages(
                 namefile1=namefile1,
                 namefile2=namefile2,
                 htol=htol,
@@ -115,22 +117,36 @@ def run_mf2005(namefile, comparison=True):
     return
 
 
-def test_mf2005():
-    if config.exclude is None:
-        exclude = []
-    else:
-        exclude = list(config.exclude)
-    namefiles = sorted(get_namefiles(config.testpaths[3], exclude=exclude))
-    for namefile in namefiles:
-        yield run_mf2005, namefile
-    return
+def pytest_generate_tests(metafunc):
+    """Dynamically parametrize tests based on available namefiles."""
+    if "namefile" in metafunc.fixturenames:
+        test_path = Path(config.testpaths[3])
+        excluded = list(config.exclude) if config.exclude else []
+        if not test_path.exists():
+            metafunc.parametrize("namefile", [], ids=[])
+        else:
+            namefiles = get_namefile_paths(
+                config.testpaths[3],
+                namefile="*.nam",
+                excluded=excluded
+            )
+            metafunc.parametrize(
+                "namefile",
+                namefiles,
+                ids=[p.name for p in namefiles]
+            )
+
+
+def test_mf2005(namefile):
+    run_mf2005(namefile)
 
 
 if __name__ == "__main__":
-    if config.exclude is None:
-        exclude = []
-    else:
-        exclude = list(config.exclude)
-    namefiles = sorted(get_namefiles(config.testpaths[3], exclude=exclude))
+    excluded = list(config.exclude) if config.exclude else []
+    namefiles = get_namefile_paths(
+        config.testpaths[3],
+        namefile="*.nam",
+        excluded=excluded
+    )
     for namefile in namefiles:
         run_mf2005(namefile)
