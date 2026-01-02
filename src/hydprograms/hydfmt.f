@@ -91,10 +91,9 @@ C----- Read file names
     1 WRITE(*,*) 'Enter name of file with unformatted hydrograph data:'
       READ(*,'(A)') FN1
       IF(FN1.EQ.'        ') GO TO 100
-      ! Use the following line when compiling with Absoft compiler
-      !OPEN(UNIT=inunit,FILE=FN1,FORM='UNFORMATTED',ACCESS='TRANSPARENT')
-      ! Use the following line when compiling with Lahey or Intel compiler
-      OPEN(UNIT=inunit,FILE=FN1,FORM='BINARY',ACCESS='SEQUENTIAL',
+      ! Use ACCESS='STREAM' for portable binary I/O without record markers
+      ! (Fortran 2003 standard, equivalent to Intel's FORM='BINARY')
+      OPEN(UNIT=inunit,FILE=FN1,FORM='UNFORMATTED',ACCESS='STREAM',
      &        STATUS='OLD')
 CC
 C----- Read first unformatted header record with number of hydrographs saved.
