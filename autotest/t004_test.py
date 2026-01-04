@@ -87,6 +87,21 @@ def run_mf2005(namefile, comparison=None):
             )
             if not success_cmp:
                 print("{} comparison failed".format(testname))
+                # Print detailed comparison output
+                outfile1_path = Path(outfile1)
+                outfile2_path = Path(outfile2)
+                if outfile1_path.exists():
+                    print(f"\n{'='*60}")
+                    print(f"Budget comparison output ({outfile1}):")
+                    print('='*60)
+                    with open(outfile1_path) as f:
+                        print(f.read())
+                if outfile2_path.exists():
+                    print(f"\n{'='*60}")
+                    print(f"Head comparison output ({outfile2}):")
+                    print('='*60)
+                    with open(outfile2_path) as f:
+                        print(f.read())
 
             outfile3 = str(testpth / "swr.bud.cmp")
             success_swr = compare_swrbudget(
@@ -98,6 +113,14 @@ def run_mf2005(namefile, comparison=None):
             )
             if not success_swr:
                 print("{} swr budget comparison failed".format(testname))
+                # Print detailed SWR budget comparison output
+                outfile3_path = Path(outfile3)
+                if outfile3_path.exists():
+                    print(f"\n{'='*60}")
+                    print(f"SWR budget comparison output ({outfile3}):")
+                    print('='*60)
+                    with open(outfile3_path) as f:
+                        print(f.read())
 
             # stage comparison
             outfile4 = str(testpth / "swr.stage.cmp")
@@ -109,6 +132,14 @@ def run_mf2005(namefile, comparison=None):
             )
             if not success_stg:
                 print("{} swr stage comparison failed".format(testname))
+                # Print detailed SWR stage comparison output
+                outfile4_path = Path(outfile4)
+                if outfile4_path.exists():
+                    print(f"\n{'='*60}")
+                    print(f"SWR stage comparison output ({outfile4}):")
+                    print('='*60)
+                    with open(outfile4_path) as f:
+                        print(f.read())
 
             if success_cmp and success_swr and success_stg:
                 success = True
