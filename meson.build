@@ -70,7 +70,7 @@ endif
 if fc_id == 'intel-cl'
   # windows
   compile_args += ['/fpe:0',              # Activate all floating point exceptions
-                   '/heap-arrays:0',
+                   '/heap-arrays',        # Use heap for large arrays to avoid stack overflow
                    '/traceback',
                    '/fpp',                # Activate preprocessing
                    '/extend-source',
@@ -92,7 +92,7 @@ if fc_id == 'intel-cl'
 elif fc_id == 'intel' or fc_id == 'intel-llvm'
   # linux and macOS
   compile_args += ['-fpe0',              # Activate all floating point exceptions
-                   '-no-heap-arrays',
+                   '-heap-arrays',       # Use heap for large arrays to avoid stack overflow
                    '-traceback',
                    '-extend-source',
                    '-diag-disable:7416',  # f2008 warning
@@ -112,7 +112,7 @@ elif fc_id == 'intel' or fc_id == 'intel-llvm'
 elif fc_id == 'intel-llvm-cl'
   # windows
   compile_args += ['/fpe:0',              # Activate all floating point exceptions
-                   '/heap-arrays:0',
+                   '/heap-arrays',        # Use heap for large arrays to avoid stack overflow
                    '/traceback',
                    '/extend-source',
                    '/fpp',                # Activate preprocessing
