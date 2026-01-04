@@ -8,11 +8,15 @@ from modflow_devtools.misc import get_namefile_paths
 import config
 
 
-def run_mf2005(namefile, regression=True):
+def run_mf2005(namefile, regression=None):
     """
     Run the simulation.
 
     """
+
+    # Enable regression testing if release executable exists
+    if regression is None:
+        regression = Path(config.target_dict["release"]).exists()
 
     # Set root as the directory name where namefile is located
     # Get test name from namefile path (parent dir name + namefile stem)

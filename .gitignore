@@ -24,6 +24,7 @@ Release/
 *.obs
 
 *.pyc
+**/__pycache__/
 
 bin/
 .idea/

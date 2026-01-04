@@ -78,6 +78,10 @@ jobs:
           name: meson-log.txt
           path: ${{ env.PROGRAM_NAME }}/builddir/meson-logs/meson-log.txt
 
+      - name: Download reference executable for regression testing
+        working-directory: ${{ env.PROGRAM_NAME }}
+        run: pixi run get-release
+
       - name: Test applications
         working-directory: ${{ env.PROGRAM_NAME }}
         run: pixi run autotest
