@@ -82,7 +82,7 @@ jobs:
         uses: modflowpy/install-modflow-action@v1
         with:
           subset: mf2005
-          path: ${{ env.PROGRAM_NAME }}/temp/release
+          path: ${{ env.PROGRAM_NAME }}/autotest/temp/release
 
       - name: Test applications
         working-directory: ${{ env.PROGRAM_NAME }}
