@@ -90,19 +90,6 @@ def run_mf2005(namefile, regression=None):
             )
             if not success:
                 print("{} comparison failed".format(testname))
-                # Print detailed comparison output
-                if outfile1.exists():
-                    print(f"\n{'='*60}")
-                    print(f"Budget comparison output ({outfile1}):")
-                    print('='*60)
-                    with open(outfile1) as f:
-                        print(f.read())
-                if outfile2.exists():
-                    print(f"\n{'='*60}")
-                    print(f"Head comparison output ({outfile2}):")
-                    print('='*60)
-                    with open(outfile2) as f:
-                        print(f.read())
 
     # Clean things up
     config.teardown(success, testpth)
