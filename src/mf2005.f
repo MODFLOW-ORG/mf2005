@@ -743,9 +743,9 @@ C     Write times to file if requested
         ENDIF
       ENDIF
 C
-C     Ensure output file is written (needed on macOS to flush buffers before exit)
-C     Flush only IOUT to avoid access violations with stream-access binary files on Intel compiler
-      CALL FLUSH()!(IOUT)
+C     Ensure output file is written on macOS/gfortran, but flush only IOUT to avoid
+C     access violations with stream-access binary files using ifx on linux/windows.
+      CALL FLUSH(IOUT)
 C
       RETURN
       END
