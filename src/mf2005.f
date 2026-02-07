@@ -745,7 +745,7 @@ C     Write times to file if requested
 C
 C     Ensure output file is written (needed on macOS to flush buffers before exit)
 C     Flush only IOUT to avoid access violations with stream-access binary files on Intel compiler
-      CALL FLUSH(IOUT)
+      CALL FLUSH()!(IOUT)
 C
       RETURN
       END
