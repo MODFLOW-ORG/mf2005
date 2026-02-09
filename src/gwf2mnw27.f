@@ -2177,8 +2177,8 @@ c             Q has been constrained
              else
 c             only perform % checks after second iteration (lets soln get going)
               if(kiter.gt.2) then
-c              % check divides by lastQ, so avoid this if it is zero
-               if(lastQ.ne.0.0) then
+c              % check divides by lastQ, so avoid this if it is zero or very small
+               if(abs(lastQ).gt.1.0d-30) then
 c               this is the percentage change, below which the Q will be locked in
 c               for the time step
                 temppct=0.01d0
