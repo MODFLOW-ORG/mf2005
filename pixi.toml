@@ -2,7 +2,7 @@
 name = "mf2005"
 channels = ["conda-forge"]
 platforms = ["win-64", "linux-64", "linux-aarch64", "osx-arm64", "osx-64"]
-version = "1.12.00"
+version = "1.12.02"
 
 [dependencies]
 appdirs = "*"

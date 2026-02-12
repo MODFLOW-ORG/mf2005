@@ -2,7 +2,7 @@ project(
   'mf2005',
   'fortran',
   'c',
-  version: '1.12.00',
+  version: '1.12.02',
   license: 'CC0',
   meson_version: '>= 1.3.1',
   default_options : [
