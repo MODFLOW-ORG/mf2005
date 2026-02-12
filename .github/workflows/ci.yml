@@ -61,6 +61,7 @@ jobs:
 
       - name: Get ostag
         working-directory: ${{ env.PROJ_NAME }}
+        shell: bash
         id: ostag
         run: |
           echo "ostag=$(pixi run get-ostag)" >> $GITHUB_OUTPUT
