@@ -43,7 +43,7 @@ jobs:
         shell: ${{ matrix.shell }}
     steps:
       - name: Checkout mf2005
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ${{ env.PROJ_NAME }}
 
@@ -158,14 +158,13 @@ jobs:
           path: ${{ env.PROJ_NAME }}/*.zip
 
   release:
-    name: Draft release
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    name: Make release
     needs: build
     permissions:
       contents: write
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout mf2005
+      - name: Checkout repo
         uses: actions/checkout@v5
         with:
           path: ${{ env.PROJ_NAME }}
@@ -176,7 +175,7 @@ jobs:
           ver=$(grep "^  version:" meson.build | head -1 | sed "s/  version: '\(.*\)',/\1/g")
           echo "version=$ver" >> $GITHUB_OUTPUT
 
-      - name: Download all artifacts
+      - name: Download distributions
         uses: actions/download-artifact@v5
         with:
           pattern: ${{ env.PROJ_NAME }}*
@@ -187,6 +186,7 @@ jobs:
         run: ls -l ${{ env.PROJ_NAME }}
 
       - name: Create release
+        if: github.event_name == 'workflow_dispatch'
         uses: ncipollo/release-action@v1
         with:
           tag: v${{ steps.version.outputs.version }}
