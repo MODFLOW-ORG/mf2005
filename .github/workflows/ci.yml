@@ -1,4 +1,4 @@
-name: mf2005 checks
+name: mf2005 CI/CD
 on:
   # run at 6 AM UTC every day
   schedule:
