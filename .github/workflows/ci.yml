@@ -180,10 +180,10 @@ jobs:
         with:
           pattern: ${{ env.PROJ_NAME }}*
           merge-multiple: true
-          path: ${{ env.PROJ_NAME }}
+          path: ${{ env.PROJ_NAME }}/dists
 
       - name: List distribution files
-        run: ls -l ${{ env.PROJ_NAME }}
+        run: ls -l ${{ env.PROJ_NAME }}/dists/
 
       - name: Create release
         if: github.event_name == 'workflow_dispatch'
@@ -192,7 +192,7 @@ jobs:
           tag: v${{ steps.version.outputs.version }}
           name: ${{ env.PROJ_NAME }} ${{ steps.version.outputs.version }}
           body: ${{ env.LONG_NAME }} version ${{ steps.version.outputs.version }}
-          artifacts: ${{ env.PROJ_NAME }}/**/*.zip
+          artifacts: ${{ env.PROJ_NAME }}/dists/*.zip
           draft: true
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
