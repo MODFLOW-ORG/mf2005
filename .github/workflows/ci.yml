@@ -166,7 +166,9 @@ jobs:
       contents: write
     steps:
       - name: Checkout mf2005
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          path: ${{ env.PROJ_NAME }}
 
       - name: Get version
         id: version
@@ -175,9 +177,14 @@ jobs:
           echo "version=$ver" >> $GITHUB_OUTPUT
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
+          pattern: ${{ env.PROJ_NAME }}*
+          merge-multiple: true
           path: ${{ env.PROJ_NAME }}
+
+      - name: List distribution files
+        run: ls -l ${{ env.PROJ_NAME }}
 
       - name: Create release
         uses: ncipollo/release-action@v1
