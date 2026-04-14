@@ -180,7 +180,7 @@ c
         BACKSPACE (In)
       ENDIF
 c
-c     Test for creation of a WEL1 package and auxilary output files
+c     Test for creation of a WEL1 package and auxiliary output files
 c
       iok = 1
       DO WHILE ( iok.EQ.1 )
@@ -223,14 +223,14 @@ c            Find and use file name
         ENDIF
       ENDDO
 c
-c  Write header in Auxilary BYNODE file if KPER=1 & IO>0
+c  Write header in Auxiliary BYNODE file if KPER=1 & IO>0
 c
       IF ( IOWELL2(2).NE.0 ) THEN
         io = ABS(IOWELL2(2))
         WRITE (io, 9008)
       ENDIF
 c
-c  Write header in Auxilary QSUM file if KPER=1 & IO>0
+c  Write header in Auxiliary QSUM file if KPER=1 & IO>0
 c
       IF ( IOWELL2(3).NE.0 ) THEN
         io = ABS(IOWELL2(3))
@@ -682,7 +682,7 @@ c
         WRITE (IOUT, *) 'WELLS WILL NOT BE PRINTED'
       ENDIF
 c
-c  Write blank fields in Auxilary BYNODE file if KPER=1 & IO>0
+c  Write blank fields in Auxiliary BYNODE file if KPER=1 & IO>0
 c
       IF ( TOTIM.LT.1E-26 .AND. IOWELL2(2).NE.0 ) THEN
         io = ABS(IOWELL2(2))
@@ -692,7 +692,7 @@ c
         ENDDO
       ENDIF
 c
-c  Write blank fields in Auxilary QSUM file if KPER=1 & IO>0
+c  Write blank fields in Auxiliary QSUM file if KPER=1 & IO>0
 c
       IF ( TOTIM.LT.1E-26 .AND. IOWELL2(3).NE.0 ) THEN
         io = ABS(IOWELL2(3))
@@ -1217,7 +1217,7 @@ c -----print the individual rates if requested(IWL2CB<0).
      +               HNEW(i,j,k), dd, qwbar, sL, sNL
             ENDIF
 c
-c -----print the individual rates to auxilary file if requested(IWL2CB<0).
+c -----print the individual rates to auxiliary file if requested(IWL2CB<0).
             iobynd = ABS(IOWELL2(2))
             IF ( iobynd.GT.0 ) THEN
               IF ( ioch.EQ.1 .OR. IOWELL2(2).LT.0 )
@@ -1288,7 +1288,7 @@ c -----print the summed rates if requested(IWL2CB<0).
             IF ( ioch.EQ.1 ) WRITE (IOUT, '(A26,1x,2i6,6g13.6)')
      +                              MNWSITE(m), m, ne, qsum, hwell, dd, 
      +                              qwbar
-c -----print the summed rates to auxilary file if requested .
+c -----print the summed rates to auxiliary file if requested .
             ioqsum = ABS(IOWELL2(3))
             IF ( ioqsum.GT.0 ) THEN
               IF ( ioch.EQ.1 .OR. IOWELL2(3).LT.0 ) THEN
@@ -1394,7 +1394,7 @@ c         9   = I/O unit for well output
 c        16   = Header Flag   Print= 0 / NoPrint = 1
 c------------------------------------------------------------------
 c
-c   Test auxilary output files for cleaning data sets
+c   Test auxiliary output files for cleaning data sets
       iobynd = ABS(IOWELL2(2))
       IF ( iobynd.GT.0 ) THEN
         WRITE (iobynd, '(a32)') eoftag
@@ -1960,7 +1960,7 @@ c
       tx2 = Txt
       CALL UPCASE(tx2)
 c
-c    Test for switching control to an auxilary input file
+c    Test for switching control to an auxiliary input file
 c
       ki = INDEX(Txt, ':')
       IF ( INDEX(tx2, 'REDIRECT').GT.0 .AND. ki.GT.0 ) THEN
@@ -1973,7 +1973,7 @@ c
         GOTO 5
       ENDIF
 c
-c    Test for returning io control from auxilary input to master input file
+c    Test for returning io control from auxiliary input to master input file
 c
       IF ( INDEX(tx2, 'RETURN').GT.0 .AND.
      +     INDEX(tx2, 'CONTROL').GT.0 ) GOTO 10
@@ -1987,10 +1987,10 @@ c
       IF ( INDEX(tx2, '<STOP>').GT.0 ) Ierr = 2
       RETURN
 c
-c    Report error in opening auxilary input file and stop
+c    Report error in opening auxiliary input file and stop
 c
    20 WRITE (*, 25) afile
-   25 FORMAT (/, '  ERROR opening auxilary input file', //,
+   25 FORMAT (/, '  ERROR opening auxiliary input file', //,
      + '   The file:  ', a40, ' does not exist', /)
 c
 c     When compiling MNW with Modflow-96, comment out the call to

@@ -170,7 +170,7 @@ void MF2KGMG_FREE(MF2KGMG_operator** GMGID)
   r_free(&GMG_ptr->r);
   r_free(&GMG_ptr->z);
 
-  /* Deallocate CCFD outside normal contex */
+  /* Deallocate CCFD outside normal context */
   free(GMG_ptr->CCFD_ptr->DD);
   free(GMG_ptr->CCFD_ptr);
 

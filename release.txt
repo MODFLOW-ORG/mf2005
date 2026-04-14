@@ -74,7 +74,7 @@ o Version 1.10.0 03/06/2013
     GWF2MNW27 -- a number of problems were fixed as described in
        readme_MNW2.txt .
     PCGN2 -- Corrected logic error that resulted in excessive inner
-       interations in the first outer iteration of a time step.  This
+       iterations in the first outer iteration of a time step.  This
        correction reduces execution time.
     GWF2BAS7 -- In the Name File for DATA and DATA(BINARY) files, the
        "OLD" option indicates that the file must already exist; however,
@@ -84,7 +84,7 @@ o Version 1.10.0 03/06/2013
        while MODFLOW is running.
     GWF2DRT7 -- Modified the open statement for OPEN/CLOSE files to
        specify that these files are opened for READ access rather than
-       the defult READWRITE access.
+       the default READWRITE access.
     GWF2SFR7, GWF2LAK7, GWF2UZF1, GWF2GAG7 -- See file
        LAK_SFR_UZF_updates_MF2005.txt for a description of changes.
 
@@ -379,7 +379,7 @@ o Version 1.3
    OBS2BAS7 -- Changed format for saving observations in a disk file to
        write less digits..
    OBS2BAS7 -- Fixed problem with head-change observations at cells that
-       have an initally dry simulated value, but values at later time are
+       have an initially dry simulated value, but values at later time are
        wet.  The later values were being computed based on the dry value,
        and now all of the values at later times will be dry.
 

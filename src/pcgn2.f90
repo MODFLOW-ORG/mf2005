@@ -1347,7 +1347,7 @@ CONTAINS
                    MAX_NODE=MAX(MAX_NODE,NCN)
                 ENDIF
              ENDIF
-             ! ... CHECK SIMILITUDE OF LATERAL CONNECTION IDENITIES
+             ! ... CHECK SIMILITUDE OF LATERAL CONNECTION IDENTITIES
              IF (I.NE.1) THEN
                 IF (CK_D(NRL)/=0) THEN
                    IF (CK_D(NRL)>CK_D(NODE)) THEN

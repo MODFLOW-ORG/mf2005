@@ -2226,7 +2226,7 @@ C-----------------New head is in this unit
                     CRHS=CRHS+RMLT0*BNP*BOTU
                     IF(IFLG.EQ.1) CRHS=CRHS-RMLT0*BNP*HN
                   ELSEIF(HO.LT.BOTU.AND.HN.GT.TOPU) THEN
-C-----------------Old head is below and new head is abov this unit
+C-----------------Old head is below and new head is above this unit
                     CRHS=CRHS+RMLT0*BNP*(BOTU-TOPU)
                   ENDIF
                 ENDIF

@@ -3190,7 +3190,7 @@ C             SPECIFIED DISCHARGE
             CASE (3)
               CALL URWORD(line,lloc,istart,istop,3,ival,r,IOUT,iut)
               REACH(istrrch)%STRUCT(istrnum)%STRVAL = SSWR_R2D(r)
-C               UPDATE INITAL PUMP RATE
+C               UPDATE INITIAL PUMP RATE
               REACH(istrrch)%STRUCT(istrnum)%STRTOP0   = SSWR_R2D(r)
               REACH(istrrch)%STRUCT(istrnum)%STRTOPINI = SSWR_R2D(r)
 C             SPECIFIED H-Q RELATION
@@ -7597,7 +7597,7 @@ C                 SET JAC%IU TO THE LAST ENTRY
                 END IF
               END DO
 C
-C-------------DEALLOCATE TEMPORARY STORAGE FOR RESETING IA, JA, ISMAP, AND ICMAP
+C-------------DEALLOCATE TEMPORARY STORAGE FOR RESETTING IA, JA, ISMAP, AND ICMAP
 C             BASED ON RESULTS OF REVERSE CUTHILL MCKEE REORDERING
               DEALLOCATE ( iat, jat )
               DEALLOCATE ( ismapt, icmapt )

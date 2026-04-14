@@ -340,7 +340,7 @@ routing is active. When TRANSROUTE is specified, optional variables IRTFLG, NUMT
 and FLWTOL also must be specified in Item 1c. 
 
 NSTRM An integer value equal to the number of stream reaches (finite-difference cells) that are 
-active during the simulation. Specifying a negative value for NSTRM is equivelent to specifying 
+active during the simulation. Specifying a negative value for NSTRM is equivalent to specifying 
 the key word REACHINPUT.
 
 An updated, complete version of the SFR2 input instructions is  with the MODFLOW-2005 version 1.9 
@@ -434,7 +434,7 @@ A change was made to fix the way stream information was being written to the LIS
 Lake Package (gwf2lak7.f)
 
 A major change was to add the option for the user to specify the lake bathymetry information directly through 
-exteral text files. If the optional key word “TABLEINPUT” is specified on the first line of the Lake 
+external text files. If the optional key word “TABLEINPUT” is specified on the first line of the Lake 
 package input file then the program reads values of lake stage, volume, and area from external lake 
 bathymetry text files. The unit number of the external text file for each lake is read from the end 
 of item 3, following the variable STAGES or the optional variables SSMN and SSMX, if they are specified. 

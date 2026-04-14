@@ -215,7 +215,7 @@ c        26   = Last Q that was looked up in table for next iteration
 c        27   = CapFlag2: If =1 then Q has been constrained, required for AD routine
 c        28   = HWTOL: Minimum absolute value of change in the computed water level in the well allowed between successive iterations
 c        29   = TEMP Storage for MISC values
-c        30   = USED TO STORE Qpot (Potential Pumping Rate) WHICH IS TRANSFERED TO MNW2(18,:)
+c        30   = USED TO STORE Qpot (Potential Pumping Rate) WHICH IS TRANSFERRED TO MNW2(18,:)
 c        31   = CONC IN WELL
 c        31+  = USED FOR STORAGE OF AUXILIARY VARIABLES
 c------------------------------------------------------------------
@@ -296,7 +296,7 @@ c     check WELLID vs existing names
 c     set PUMPLOC and PUMPCAP
         MNW2(11,MNWID)=PUMPLOC
         MNW2(22,MNWID)=PUMPCAP
-c     CapTable has max 27 entires, so PUMPCAP must not be > 25
+c     CapTable has max 27 entries, so PUMPCAP must not be > 25
         if(PUMPCAP.GT.25) then
           write(iout,*) '***ERROR*** PUMPCAP cannot be greater than 25'
           STOP 'MNW2 ERROR - PUMPCAP'
@@ -1497,7 +1497,7 @@ C--lfk
      1I3)
 C
         ELSEIF(PUMPLOC.LT.0) THEN
-c     if PUMPLOC<0, read Zpump and calulate PUMPLAY,PUMPROW,PUMPCOL
+c     if PUMPLOC<0, read Zpump and calculate PUMPLAY,PUMPROW,PUMPCOL
           READ(in,*) Zpump
 c         loop over nodes in this well
           firstnode=MNW2(4,MNWID)
@@ -2288,7 +2288,7 @@ c   Loop over all wells
 c   Only operate on active wells (MNW2(1,iw)=1 and IBOUND>0
         if (MNW2(1,iw).EQ.1) then
           qdes = mnw2(5,iw)
-c   If Capacity restrictions are set, Qdes here is actually the retricted Qpot
+c   If Capacity restrictions are set, Qdes here is actually the restricted Qpot
           if(mnw2(27,iw).ne.0) qdes = mnw2(29,iw)
           hwell = mnw2(17,iw)
           firstnode=MNW2(4,iw)
@@ -2331,7 +2331,7 @@ c                  if( hsim.gt.hmax .and. hmax.gt.verysmall ) iqslv = 1
 c                  if((qdes-qact)**2 .gt. small               ) iqslv = 1
 c                  if(abs(qact).lt.verysmall .and.hsim.gt.hmax) iqslv = 0
 c                  if(abs(qact).lt.verysmall .and.hsim.lt.hmax) iqslv = 1
-C-LFK   Set iqslv=0 if qact=0 or if PUMPCAP overides Hlimit constraint
+C-LFK   Set iqslv=0 if qact=0 or if PUMPCAP overrides Hlimit constraint
 c                  if(mnw2(27,iw).gt.1) iqslv = 0
 c                  if(abs(qact).lt.verysmall) iqslv = 0
 c                  if(abs(qdes).lt.verysmall .or. 
@@ -3773,7 +3773,7 @@ c seb
             cel2wel2=1.0D3*((Txx*Tyy)**0.5D0)/thck
           END IF
 c
-c       THEIM option (LOSSTYPE.EQ.1) only needs A, so no need to calculate  B or C
+c       THIEM option (LOSSTYPE.EQ.1) only needs A, so no need to calculate  B or C
 c
 c       SKIN (LINEAR) option, calculate B, C=0
         elseif(LOSSTYPE.EQ.2) then
@@ -4388,7 +4388,7 @@ c   Define node and next node
          dx2=DELR(C2)             
          dy1=DELC(R1)             
          dy2=DELC(R2)             
-C     convert to real coodinates
+C     convert to real coordinates
          x1=0 
          do C=1,C1-1
            x1=x1+DELR(C)
@@ -5175,7 +5175,7 @@ c       if ro/rw is <1, 'A' term will be negative.  Warn user and cut off flow f
         Ay = log(roy/rw) / Tpi2y
         Ax = log(rox/rw) / Tpi2x
 c
-c       THEIM option (LOSSTYPE.EQ.1) only needs A, so no need to calculate  B or C
+c       THIEM option (LOSSTYPE.EQ.1) only needs A, so no need to calculate  B or C
 c
 c       SKIN (LINEAR) option, calculate B, C=0
         if(LOSSTYPE.EQ.2) then

@@ -149,7 +149,7 @@ SYSTEM REQUIREMENTS
      Windows operating system.
 
 
-FUNTIONALITY
+FUNCTIONALITY
      This version of MODFLOW includes the following functionality that is
      documented in Harbaugh (2005).
 

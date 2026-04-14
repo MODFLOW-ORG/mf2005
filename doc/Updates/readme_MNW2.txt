@@ -74,7 +74,7 @@ value for the head in single-node wells drops below the bottom of the cell, it i
 the seepage face calculation, which will reduce or eliminate the desired Q from the 
 well. In cases where the Qdes is thereby reduced, the actual head in the well is 
 indeterminate, but will be reported in separate MNWI output files as the limiting 
-value of the bottom elevation of the cell together with an informaiton note that the 
+value of the bottom elevation of the cell together with an information note that the 
 actual value may be lower than that reported value.  If Qdes is reduced to zero, the 
 well is deactivated and that information is reported in the MNWI optional MNW2 
 observation well file. 
@@ -89,7 +89,7 @@ is supposed to.
 The code automatically estimates the maximum number of nodes (NODTOT) as required for 
 allocation of arrays. However, if a large number of horizontal wells are being simulated, 
 or possibly for other reasons, this default estimate proves to be inadequate, a new 
-input option has been added to alow the user to directly specify a value for NODTOT. If 
+input option has been added to allow the user to directly specify a value for NODTOT. If 
 this is a desired option, then it can be implemented by specifying a negative value for 
 "MNWMAX"--the first value listed in Record 1 (Line 1) of the MNW2 input data file. If 
 this is done, then the code will assume that the very next value on that line will be 

@@ -5,7 +5,7 @@
         REAL,PARAMETER :: CLOSEZERO=1.0E-15
         INTEGER, SAVE, POINTER :: STRHC1KHFLAG, STRHC1KVFLAG
         INTEGER, SAVE, POINTER :: Nfoldflbt, NUMTAB, MAXVAL
-        INTEGER,SAVE,                 POINTER:: IDVFLG   !diverison recharge is active flag
+        INTEGER,SAVE,                 POINTER:: IDVFLG   !diversion recharge is active flag
         INTEGER,SAVE,                 POINTER:: NFLOWTYPE
         CHARACTER*16, SAVE, DIMENSION(:), POINTER :: FLOWTYPE
         INTEGER,SAVE,POINTER:: NSS, NSTRM, NSFRPAR, ISTCB1, ISTCB2
@@ -31,9 +31,9 @@
         REAL,   SAVE,  DIMENSION(:,:),POINTER:: QSTAGE, XSEC
         REAL,   SAVE,  DIMENSION(:,:),POINTER:: AVDPT, AVWAT, WAT1
         REAL,   SAVE,  DIMENSION(:,:),POINTER:: CONCQ, CONCRUN, CONCPPT
-        REAL,   SAVE,  DIMENSION(:,:),POINTER:: TABFLOW, TABTIME   !Reading Spedified inflow
+        REAL,   SAVE,  DIMENSION(:,:),POINTER:: TABFLOW, TABTIME   !Reading Specified inflow
         REAL,   SAVE,  DIMENSION(:,:),POINTER:: FNETSEEP           !writing net seepage in UZF
-        INTEGER,SAVE,  DIMENSION(:,:),POINTER:: ISFRLIST           !Reading Spedified inflow
+        INTEGER,SAVE,  DIMENSION(:,:),POINTER:: ISFRLIST           !Reading Specified inflow
         INTEGER,SAVE,                 POINTER:: NINTOT,ITRFLG      !for LMT, total # of possible inflows edm 7/30/13
 C        INTEGER,SAVE,                 POINTER:: NFLOWTYPE          !edm
         DOUBLE PRECISION,SAVE,DIMENSION(:),  POINTER:: THTS,THTR,EPS
@@ -54,7 +54,7 @@ C        INTEGER,SAVE,                 POINTER:: NFLOWTYPE          !edm
         INTEGER, POINTER :: STRHC1KHFLAG, STRHC1KVFLAG
         INTEGER, POINTER :: Nfoldflbt, NUMTAB, MAXVAL
         INTEGER, POINTER :: NUMIRRSFR,UNITIRR,MAXCELLS
-        INTEGER,                      POINTER:: IDVFLG   !diverison recharge is active flag
+        INTEGER,                      POINTER:: IDVFLG   !diversion recharge is active flag
         INTEGER,                      POINTER:: NFLOWTYPE
         CHARACTER*16,  DIMENSION(:),  POINTER:: FLOWTYPE
         INTEGER,     POINTER:: NSS, NSTRM, NSFRPAR, ISTCB1, ISTCB2
